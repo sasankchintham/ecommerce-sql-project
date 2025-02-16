@@ -4,7 +4,6 @@ USE EcommerceDB;
 
 -- Customers Table
 CREATE TABLE Customers (
-CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100),
     Location VARCHAR(100),
@@ -96,3 +95,41 @@ JOIN Orders O ON C.CustomerID = O.CustomerID
 GROUP BY C.Name
 ORDER BY TotalSpent DESC
 LIMIT 5;
+-- Find AOV(Average Order Value)
+SELECT AVG(TotalAmount) AS AverageOrderValue FROM Orders;
+-- adding shipping date column
+ALTER TABLE Orders ADD COLUMN ShippingDate DATE;
+ALTER TABLE Orders ADD COLUMN OrderStatus VARCHAR(20);
+ALTER TABLE Orders MODIFY COLUMN OrderID INT AUTO_INCREMENT;
+
+INSERT INTO Orders (CustomerID, OrderDate, TotalAmount, OrderStatus, PaymentMethod)
+VALUES 
+(101, '2024-02-10', 500.00, 'Pending', 'Credit Card'),
+(102, '2024-02-09', 150.00, 'Shipped', 'PayPal'),
+(103, '2024-02-08', 200.00, 'Delivered', 'Bank Transfer'),
+(104, '2024-02-07', 300.00, 'Pending', 'Credit Card'),
+(105, '2024-02-06', 450.00, 'Shipped', 'PayPal');
+
+SELECT * FROM Customers;
+INSERT INTO Customers (CustomerID, Name, Location, SignupDate, Email)
+VALUES 
+(3, 'Alice Brown', 'Chicago', '2024-01-15', 'alice@example.com'),
+(4, 'Bob Johnson', 'Houston', '2024-01-18', 'bob@example.com'),
+(5, 'Charlie Davis', 'Miami', '2024-01-20', 'charlie@example.com');
+
+INSERT INTO Orders (CustomerID, OrderDate, TotalAmount, OrderStatus, PaymentMethod)
+VALUES 
+(1, '2024-02-10', 500.00, 'Pending', 'Credit Card'),
+(2, '2024-02-09', 150.00, 'Shipped', 'PayPal'),
+(3, '2024-02-08', 200.00, 'Delivered', 'Bank Transfer'),
+(4, '2024-02-07', 300.00, 'Pending', 'Credit Card'),
+(5, '2024-02-06', 450.00, 'Shipped', 'PayPal');
+
+-- How many orders are still pending for shipment?
+SELECT COUNT(*) AS PendingOrders 
+FROM Orders 
+WHERE ShippingDate IS NULL;
+
+
+
+
